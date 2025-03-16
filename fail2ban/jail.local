@@ -1,0 +1,9 @@
+[sshd]
+enabled = true
+port = 22
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3               # Allow 3 failed attempts before banning
+bantime = 1h               # Ban IPs for 1 hour
+findtime = 10m             # Count failures within a 10-minute window
+ignoreip = 127.0.0.1/8     # Allow localhost (adjust if necessary)

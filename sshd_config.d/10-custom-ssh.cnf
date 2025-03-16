@@ -1,0 +1,39 @@
+# === GENERAL SETTINGS ===
+Port 22                      # Standard port for compatibility; consider moving if desired
+AddressFamily inet           # Only listen on IPv4 for simplicity and consistency
+ListenAddress 0.0.0.0        # Ensure accessibility across network interfaces
+
+# === AUTHENTICATION SETTINGS ===
+PermitRootLogin no           # Block root login for security; use `sudo` instead
+PasswordAuthentication no    # Enforce key-based authentication
+PubkeyAuthentication yes     # Ensure public key authentication is enabled
+
+# === KEY-BASED AUTH SETTINGS ===
+AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2
+StrictModes yes              # Ensure correct permissions on key files
+
+# === SECURITY HARDENING ===
+PermitEmptyPasswords no      # Disallow blank passwords
+ChallengeResponseAuthentication no # Deprecated; replaced by keyboard-interactive
+UsePAM yes                   # Required for proper session management
+
+# === CIPHERS & MACS (SECURITY) ===
+Ciphers aes256-gcm@openssh.com,aes256-ctr
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org
+MACs hmac-sha2-512,hmac-sha2-256
+
+# === LOGGING AND MONITORING ===
+LogLevel VERBOSE             # Detailed logs for troubleshooting and security
+SyslogFacility AUTHPRIV      # Direct SSH logs to secure area
+MaxAuthTries 3               # Limit brute force attempts
+MaxSessions 10               # Prevent abuse of multiplexing
+
+# === CONNECTION AND TIMEOUTS ===
+ClientAliveInterval 300      # Keep connection alive (5 mins)
+ClientAliveCountMax 2        # Disconnect after 2 missed intervals (10 mins total)
+LoginGraceTime 30            # Time before login attempt is dropped
+TCPKeepAlive no              # Disable TCP keepalives; rely on `ClientAliveInterval`
+
+# === USER RESTRICTIONS ===
+AllowGroups sshusers         # Restrict SSH to members of the `sshusers` group ! DON'T FORGET TO CREATE THIS GROUP !
+DenyUsers root               # Explicitly deny root logins for clarity
